@@ -48,7 +48,7 @@ int fifo(int8_t** page_table, int num_pages, int prev_page,
 }
 
 int second_chance(int8_t** page_table, int num_pages, int prev_page,
-                  int fifo_frm, int num_frames, int clock, int *physical_memory) {
+                  int fifo_frm, int num_frames, int clock) {
     for (int frame = 0;frame < num_frames; frame++) {
             for (int page = 0; page < num_pages; page++) {
                 if (page_table[page][PT_FRAMEID] == frame) {
@@ -62,7 +62,7 @@ int second_chance(int8_t** page_table, int num_pages, int prev_page,
                 }
             }
     }
-    //Caso todas as páginas tenham sido referenciadas o algoritmo de Segunda Chance tornasse FIFO
+    //Caso todas as páginas tenham sido referenciadas o algoritmo de Segunda Chance tornasse FIFO puro
     return fifo(page_table, num_pages,prev_page, fifo_frm, num_frames, clock);
 }
 
@@ -71,7 +71,7 @@ int nru(int8_t** page_table, int num_pages, int prev_page,
     //Busca páginas da Classe 0
     for (int page = 0; page < num_pages; page++) {
         if ((page_table[page][PT_REFERENCE_BIT] == 0) && (page_table[page][PT_DIRTY] == 0)) {
-            if (page_table[page][PT_MAPPED] != 0){ //verifica se há algum endereço nessa página
+            if (page_table[page][PT_MAPPED] != 0){
                 return page;
                 }
         }
@@ -106,14 +106,14 @@ int nru(int8_t** page_table, int num_pages, int prev_page,
 int aging(int8_t** page_table, int num_pages, int prev_page,
           int fifo_frm, int num_frames, int clock) {
     int small, page_aux, i;
-   /* for (page_aux = 0; page_aux < num_pages; page_aux++) { //localiza a primeira página que está sendo ocupada na tabela de páginas
+    for (page_aux = 0; page_aux < num_pages; page_aux++) { //localiza a primeira página que possui um endereço fisico presente
         if (page_table[page_aux][PT_MAPPED] != 0) {
             small = page_aux;
             break;
-        }*/
+        }
 
     }
-    for( i = (page_aux + 1);i<num_pages; i++) {//localiza a página com o menor valor no contador começando da primeira página ocupada
+    for(i = (page_aux + 1); i<num_pages; i++) {//localiza a página com o menor valor no contador começando da primeira página ocupada
          if (page_table[i][PT_MAPPED] != 0) {
              if (page_table[small][PT_AGING_COUNTER] > page_table[i][PT_AGING_COUNTER]) {
                 small = i;
