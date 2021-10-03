@@ -38,6 +38,8 @@ typedef struct {
 //
 // Adicione mais parâmetros caso ache necessário
 
+
+//As assinaturas das funções foram mantidas com a estrutura inicial do projeto, no entanto nem todos os parâmetros foram usados nas funções
 int fifo(int8_t** page_table, int num_pages, int prev_page,
          int fifo_frm, int num_frames, int clock) {
     for (int page = 0; page < num_pages; page++) {//percorre a tabela de páginas a procura da página que tem o endereço físico
