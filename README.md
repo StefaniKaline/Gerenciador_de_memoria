@@ -38,4 +38,4 @@ gcc -Wall vmm.c -o vmm
 ~~~
 
 ### Bugs conhecidos ou problemas:
-
+* Não foi identificado nenhum problema que impedisse a execução dos algoritmos.
